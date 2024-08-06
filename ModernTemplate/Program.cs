@@ -31,8 +31,6 @@ builder.Services
 builder.Services.AddIdentityCore<User>() //AddEntityFrameworkSTores (context) ->  but we should use dapper for query
     .AddApiEndpoints();
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
-
-
 builder.Services.AddHttpClient<HttpService>(client =>
 {
     client.BaseAddress = new Uri("");
