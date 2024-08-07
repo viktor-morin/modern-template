@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using ModernTemplate.DomainModels.DomainEvents;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ModernTemplate.DomainModels;
 
@@ -9,9 +10,26 @@ public abstract class Aggregate
     public DateTime Created { get; init; } = DateTime.UtcNow;
     public DateTime Updated { get; private set; } = DateTime.UtcNow;
 
+    private readonly List<IDomainEvent> _domainEvents = new();
+
     protected void UpdateAggregateTimestamp()
     {
         Updated = DateTime.UtcNow;
+    }
+
+    public IEnumerable<IDomainEvent> GetDomainEvents()
+    {
+        return _domainEvents;
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
+
+    protected void RaiseDomainEvents(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
     }
 
     public override bool Equals(object? obj)

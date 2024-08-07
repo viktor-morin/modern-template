@@ -1,4 +1,5 @@
-﻿using ModernTemplate.DomainModels.Ids;
+﻿using ModernTemplate.DomainModels.DomainEvents;
+using ModernTemplate.DomainModels.Ids;
 using ModernTemplate.DomainModels.ValueObjects;
 
 namespace ModernTemplate.DomainModels.Aggregates;
@@ -24,5 +25,28 @@ public sealed class Weather : Aggregate
 
 
         return new Weather(Temperature.Create(temperature, unit));
+    }
+
+    public void TempToShowEvent()
+    {
+        RaiseDomainEvents(TempEvent.)
+    }
+}
+
+
+public sealed class TempEvent : IDomainEvent
+{
+    public WeatherId WeatherId { get; init; }
+
+    private TempEvent(WeatherId weatherId)
+    {
+        WeatherId = weatherId;
+    }  
+    
+    public static TempEvent Create(WeatherId weatherId)
+    {
+        ArgumentNullException.ThrowIfNull(weatherId);
+
+        return new TempEvent(weatherId);
     }
 }

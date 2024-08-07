@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
 namespace ModernTemplate;

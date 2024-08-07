@@ -1,9 +1,16 @@
 
 using Asp.Versioning;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using ModernTemplate;
+using ModernTemplate.Database;
 using ModernTemplate.DomainModels.Aggregates;
+using ModernTemplate.HealthCheck;
+using ModernTemplate.Options;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -17,6 +24,7 @@ builder.Services.AddSwaggerGen();
 
 // Own
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddHostedService<OutboxService>();
 builder.Services.Configure<HostOptions>(options =>
 {
@@ -34,7 +42,36 @@ builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpClient<HttpService>(client =>
 {
     client.BaseAddress = new Uri("");
+}); //dont use in singleton since they live forever, use httpclientfactory there instead
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache(); // IDistributedCache
+builder.Logging.AddOpenTelemetry(config =>
+{
+    config.IncludeScopes = true;
+    config.IncludeFormattedMessage = true;
 });
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(options =>
+    {
+        options
+            .AddRuntimeInstrumentation()
+            .AddMeter(
+                "Microsoft.AspNetCore.Hosting",
+                "Microsoft.AspNetCore.Server.Kestrel",
+                "System.Net.Http");
+    })
+    .WithTracing(options =>
+    {
+        options
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+    });
+builder.Services.AddOptionsWithValidateOnStart<PostgresSettings>()
+    .BindConfiguration("Postgres")
+    .ValidateDataAnnotations();
+builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddHealthChecks()
+    .AddCheck<DatabaseHealthCheck>(nameof(DatabaseHealthCheck));
 
 var app = builder.Build();
 
@@ -48,6 +85,11 @@ if (app.Environment.IsDevelopment())
 
 // Own
 app.UseExceptionHandler();
+app.MapHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 app.MapIdentityApi<User>();
 
 var apiVersionSet = app
@@ -61,7 +103,7 @@ var versionGroup = app
     .WithApiVersionSet(apiVersionSet);
 
 app.MapEndpoints(versionGroup);
-//done at 2024-03-10
+//nest at 2024-04-21
 
 
 app.UseHttpsRedirection();
@@ -70,7 +112,7 @@ app.UseHttpsRedirection();
 //todo
 // Write about <WarningsAsErrors>CS8602</WarningsAsErrors> and set it on all projects
 // Write about explicit declarate references such as -> "UserService userService = new UserService()" instead of "var userService = new UserService()" where it makes sense
-// PDF generation Quest PDF -> // ironPDF
+// PDF generation Quest PDF -> // ironPDF (quest gratis?)
 // maybe serilog, lets see later? https://www.youtube.com/watch?v=w7yDuoCLVvQ
 // show -> if (context.User.Identity is not { IsAuthenitcated: true })
 // NetArchTest.Rules
@@ -78,6 +120,9 @@ app.UseHttpsRedirection();
 // https://www.milanjovanovic.tech/blog/cqrs-validation-with-mediatr-pipeline-and-fluentvalidation
 // test containers https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=YouTube&utm_medium=social&utm_campaign=04.03.2024
 // where T is : class, IEvent
+// report problemDetails -> json+problem
+// opentelemtry should be implemented -> need exporter
+// testname : SUT_WhenX_ShouldY -> GetMovie_WhenIdIsInvalid_ShouldReturnNotFound
 
 
 
@@ -102,6 +147,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast")
+.RequireAuthorization()
 .WithOpenApi();
 
 app.Run();
