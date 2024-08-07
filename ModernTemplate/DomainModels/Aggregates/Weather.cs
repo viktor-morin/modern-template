@@ -29,7 +29,7 @@ public sealed class Weather : Aggregate
 
     public void TempToShowEvent()
     {
-        RaiseDomainEvents(TempEvent.)
+        RaiseDomainEvents(TempEvent.Create(Id));
     }
 }
 
