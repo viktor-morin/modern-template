@@ -3,16 +3,16 @@ using Asp.Versioning;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+using Npgsql;
 using ModernTemplate;
 using ModernTemplate.Database;
 using ModernTemplate.DomainModels.Aggregates;
 using ModernTemplate.HealthCheck;
 using ModernTemplate.Options;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +51,7 @@ builder.Logging.AddOpenTelemetry(config =>
     config.IncludeFormattedMessage = true;
 });
 builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService(Assembly.GetExecutingAssembly().GetName().Name!))
     .WithMetrics(options =>
     {
         options
@@ -60,11 +61,15 @@ builder.Services.AddOpenTelemetry()
                 "Microsoft.AspNetCore.Server.Kestrel",
                 "System.Net.Http");
     })
-    .WithTracing(options =>
+    .WithTracing(tracing =>
     {
-        options
+        tracing
             .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation();
+            .AddHttpClientInstrumentation()
+            .AddEntityFrameworkCoreInstrumentation()
+            .AddNpgsql();
+
+        tracing.AddOtlpExporter();
     });
 builder.Services.AddOptionsWithValidateOnStart<PostgresSettings>()
     .BindConfiguration("Postgres")
@@ -72,6 +77,18 @@ builder.Services.AddOptionsWithValidateOnStart<PostgresSettings>()
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>(nameof(DatabaseHealthCheck));
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+}).AddApiExplorer(options =>
+  {
+      options.GroupNameFormat = "'v'VVV";
+      options.SubstituteApiVersionInUrl = true;
+  });
+
 
 var app = builder.Build();
 
@@ -103,7 +120,7 @@ var versionGroup = app
     .WithApiVersionSet(apiVersionSet);
 
 app.MapEndpoints(versionGroup);
-//nest at 2024-04-21
+//nest at 2024-05-05
 
 
 app.UseHttpsRedirection();
@@ -123,6 +140,9 @@ app.UseHttpsRedirection();
 // report problemDetails -> json+problem
 // opentelemtry should be implemented -> need exporter
 // testname : SUT_WhenX_ShouldY -> GetMovie_WhenIdIsInvalid_ShouldReturnNotFound
+// https://github.com/FortuneN/FineCodeCoverage
+// use nameof instead of toString
+
 
 
 
