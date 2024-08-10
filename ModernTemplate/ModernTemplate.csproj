@@ -14,15 +14,17 @@
 		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
 		<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
-		<PackageReference Include="CSharpFunctionalExtensions" Version="2.42.5" />
+		<PackageReference Include="FluentValidation" Version="11.9.2" />
 		<PackageReference Include="MediatR" Version="12.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.7.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
 		<PackageReference Include="Npgsql.OpenTelemetry" Version="8.0.3" />
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
 		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
+		<PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.12" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
@@ -38,7 +40,6 @@
 
 	<ItemGroup>
 	  <Folder Include="ApplicationLayer\Payments\" />
-	  <Folder Include="ApplicationLayer\Users\" />
 	  <Folder Include="VerticalSlice\Features\Activity\" />
 	  <Folder Include="VerticalSlice\Features\Workouts\" />
 	</ItemGroup>

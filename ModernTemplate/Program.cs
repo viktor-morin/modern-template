@@ -13,6 +13,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Reflection;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,7 @@ builder.Services.AddSwaggerGen();
 // Own
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.AddHostedService<OutboxService>();
+builder.Services.AddHostedService<OutboxHandlerService>();
 builder.Services.Configure<HostOptions>(options =>
 {
     options.ServicesStartConcurrently = true;
@@ -42,7 +43,9 @@ builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpClient<HttpService>(client =>
 {
     client.BaseAddress = new Uri("");
-}); //dont use in singleton since they live forever, use httpclientfactory there instead
+}).AddStandardResilienceHandler();
+
+//dont use in singleton since they live forever, use httpclientfactory there instead
 builder.Services.AddMemoryCache();
 builder.Services.AddDistributedMemoryCache(); // IDistributedCache
 builder.Logging.AddOpenTelemetry(config =>
@@ -120,7 +123,7 @@ var versionGroup = app
     .WithApiVersionSet(apiVersionSet);
 
 app.MapEndpoints(versionGroup);
-//nest at 2024-05-05
+//nest at 2024-05-18
 
 
 app.UseHttpsRedirection();
@@ -142,6 +145,7 @@ app.UseHttpsRedirection();
 // testname : SUT_WhenX_ShouldY -> GetMovie_WhenIdIsInvalid_ShouldReturnNotFound
 // https://github.com/FortuneN/FineCodeCoverage
 // use nameof instead of toString
+// internal -> only in same project
 
 
 
@@ -154,8 +158,10 @@ var summaries = new[]
 
 
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/weatherforecast", async (ISender sender, Guid userId) =>
 {
+
+    var result = await sender.Send(new GetUserQuery(userId));
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
