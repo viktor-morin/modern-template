@@ -1,5 +1,13 @@
 ﻿namespace ModernTemplate.Domain.UserAggregate;
 
-public class Follower
+public record Follower
 {
+    private Follower()
+    {
+    }
+
+    public static Follower Create()
+    {
+        return new Follower();
+    }
 }

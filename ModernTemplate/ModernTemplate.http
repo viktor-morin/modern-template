@@ -4,3 +4,4 @@ GET {{ModernTemplate_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+GET https://www.google.com

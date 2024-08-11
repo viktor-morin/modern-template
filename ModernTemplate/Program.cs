@@ -1,20 +1,21 @@
 
 using Asp.Versioning;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using HealthChecks.UI.Client;
+using MediatR.NotificationPublishers;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
-using Npgsql;
 using ModernTemplate;
 using ModernTemplate.Database;
-using ModernTemplate.DomainModels.Aggregates;
+using ModernTemplate.Domain.UserAggregate;
 using ModernTemplate.HealthCheck;
 using ModernTemplate.Options;
+using Npgsql;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Reflection;
-using MediatR;
-using MediatR.NotificationPublishers;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,11 +44,14 @@ builder.Services.AddIdentityCore<User>() //AddEntityFrameworkSTores (context) ->
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddHttpClient<HttpService>(client =>
 {
+    //dont use in singleton since they live forever, use httpclientfactory there instead
     client.BaseAddress = new Uri("");
 }).AddStandardResilienceHandler();
 
-//dont use in singleton since they live forever, use httpclientfactory there instead
-builder.Services.AddMemoryCache();
+
+builder.Services.AddHybridCache(); //nuget may not be needed after .net9 release
+
+
 builder.Services.AddDistributedMemoryCache(); // IDistributedCache
 builder.Logging.AddOpenTelemetry(config =>
 {
@@ -74,7 +78,8 @@ builder.Services.AddOpenTelemetry()
             .AddNpgsql();
 
         tracing.AddOtlpExporter();
-    });
+    })
+    .UseAzureMonitor();
 builder.Services.AddOptionsWithValidateOnStart<PostgresSettings>()
     .BindConfiguration("Postgres")
     .ValidateDataAnnotations();
@@ -98,6 +103,12 @@ builder.Services.AddMediatR(config =>
     config.NotificationPublisher = new TaskWhenAllPublisher();
 });
 
+//https://www.milanjovanovic.tech/blog/response-compression-in-aspnetcore
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
+
 
 var app = builder.Build();
 
@@ -118,6 +129,7 @@ app.MapHealthChecks("/health",
     });
 app.MapIdentityApi<User>();
 
+// correct way to line up extensionmethods, add to editorconfig file?
 var apiVersionSet = app
     .NewApiVersionSet()
     .HasApiVersion(new ApiVersion(1))
@@ -127,15 +139,20 @@ var apiVersionSet = app
 var versionGroup = app
     .MapGroup("api/v{version:apiVersion}")
     .WithApiVersionSet(apiVersionSet);
+//MapToApiVersion on MinimalApiEndpoints
 
 app.MapEndpoints(versionGroup);
 //nest at 2024-05-31
 
+app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 
 
 //todo
+// folder structure image!
+// check if we should use repostiory pattern, se image stored in repo
+// EF + Dapper
 // Write about <WarningsAsErrors>CS8602</WarningsAsErrors> and set it on all projects
 // Write about explicit declarate references such as -> "UserService userService = new UserService()" instead of "var userService = new UserService()" where it makes sense
 // PDF generation Quest PDF -> // ironPDF (quest gratis?)
@@ -154,39 +171,46 @@ app.UseHttpsRedirection();
 // internal -> only in same project
 // use signalr for long tasks
 
+// replace guid in .net9 with newer version, make PR qbout this
+
 // use internal on methods inside the domain layer so etc a valueobject only can be created inside the object
 // remove an object in a domain collection should use an id, not the object itself
+// empty row last in file
+// Add to readme.md, information about -> Clean Code, SOLID, TDD, OOP, https://en.wikipedia.org/wiki/Single-responsibility_principle
+// check that we fullfill everything here https://www.youtube.com/watch?v=RfFTVwQ9oT4
+// also here https://restfulapi.net/resource-naming/ -> https://www.youtube.com/watch?v=cVQEKamdLK8
+// horizontal scaling -> adding nodes, vertical scaling -> adding resources
+// helper class builderpatterns for testobject data -> https://www.youtube.com/watch?v=kjxf3T4tRh4
+// domain events https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation
+// Dependency Injection (DI) and Inversion of Control (IoC) are software design patterns that are used to decouple the components of an application and make it more maintainable, scalable, and testable
+// TestContainer -> https://www.youtube.com/watch?v=m7r2qyUabTs
 
+// Mention Anemic Domain Model ->  public string Name {get; set;} -> should be private set
+// PDF PuppeteerSharp -> Free
+// Idempotent  -> handle in services where it's important like sending email to customer (in memory cache etc)
+// Ladda hela aggregate om det verkligen inte finns en performance drawback
+// https://medium.com/@farkhondepeyali/enhancing-code-quality-in-net-core-with-sonaranalyzer-csharp-and-stylecop-analyzers-17e8f049d7a6
+// apikey https://www.youtube.com/watch?v=CV6VdBR86co
 
-var summaries = new[]
+app.MapGet("/weatherforecast", async (ClaimsPrincipal claimsPrincipal) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-
-
-
-app.MapGet("/weatherforecast", async (ISender sender, Guid userId) =>
-{
-
-    var result = await sender.Send(new GetUserQuery(userId));
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    await Task.Delay(1);
+    var user = claimsPrincipal.Identity?.Name;
+    return $"Hello {user}";
 })
 .WithName("GetWeatherForecast")
 .RequireAuthorization()
 .WithOpenApi();
 
-app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+static string GetGrade(int grade) =>
+    grade switch
+    {
+        int n when n >= 90 => "A",
+        int n when n >= 80 => "B",
+        int n when n >= 70 => "C",
+        int n when n >= 60 => "D",
+        _ => "F"
+    };
+
+app.Run();

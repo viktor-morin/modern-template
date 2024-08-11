@@ -4,7 +4,7 @@ namespace ModernTemplate.Endpoints;
 
 public class WeatherEndpoints : IEndpoint
 {
-    private const string ENDPOINT = "Weather";
+    private const string TAG = "Weather";
 
     public void MapEndpoint(IEndpointRouteBuilder builder)
     {
@@ -17,6 +17,8 @@ public class WeatherEndpoints : IEndpoint
                 await Task.Delay(1);
                 return Results.Ok();
             })
-            .WithTags(ENDPOINT);
+            .WithOpenApi()
+            .MapToApiVersion(1)
+            .WithTags(TAG);
     }
 }

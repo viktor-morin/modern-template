@@ -7,9 +7,9 @@ namespace ModernTemplate.Services;
 
 public sealed class DomainEventsWorker
 {
-    private readonly IUnitOfWork _dbContext;
+    private readonly IApplicationDbContext _dbContext;
 
-    public DomainEventsWorker(IUnitOfWork dbContext)
+    public DomainEventsWorker(IApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

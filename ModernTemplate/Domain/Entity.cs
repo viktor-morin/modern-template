@@ -4,7 +4,6 @@ namespace ModernTemplate.Domain;
 
 public abstract class Entity
 {
-    public abstract EntityId Id { get; init; }
     public DateTime Created { get; init; } = DateTime.UtcNow;
     public DateTime Updated { get; private set; } = DateTime.UtcNow;
 

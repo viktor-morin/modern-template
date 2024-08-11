@@ -1,5 +1,3 @@
 ﻿namespace ModernTemplate.Domain.UserAggregate;
 
-public class UserId
-{
-}
+public record UserId(Guid Value);

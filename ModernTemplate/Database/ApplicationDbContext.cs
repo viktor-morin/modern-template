@@ -1,19 +1,22 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ModernTemplate.Domain;
-using ModernTemplate.DomainModels.Aggregates;
+using ModernTemplate.Domain.UserAggregate;
+using ModernTemplate.Domain.WorkoutAggregate;
 using ModernTemplate.Options;
 using System.Text.Json;
 
 namespace ModernTemplate.Database;
 
-public sealed class ApplicationDbContext : DbContext, IUnitOfWork
+public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     private string _connectionString { get; init; }
-    public DbSet<Weather> Weathers { get; init; }
-    public DbSet<OutboxMessage> OutboxMessages { get; init; }
 
+    public DbSet<User> Users { get; init; }
+    public DbSet<Workout> Workouts { get; init; }
+
+    public DbSet<OutboxMessage> OutboxMessages { get; init; }
+    
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IOptions<PostgresSettings> settings) : base(options)
