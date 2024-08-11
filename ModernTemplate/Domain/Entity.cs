@@ -1,6 +1,6 @@
-﻿using ModernTemplate.DomainModels.DomainEvents;
+﻿using ModernTemplate.Domain.DomainEvents;
 
-namespace ModernTemplate.DomainModels;
+namespace ModernTemplate.Domain;
 
 public abstract class Entity
 {

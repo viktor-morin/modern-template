@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ModernTemplate.DomainModels.DomainEvents;
+namespace ModernTemplate.Domain.DomainEvents;
 
 internal sealed class UserCreatedDomainEventHandler
     : INotificationHandler<UserCreatedDomainEvent>

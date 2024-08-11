@@ -1,26 +1,23 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Options;
-using ModernTemplate.DomainModels;
+using ModernTemplate.Domain;
 using ModernTemplate.DomainModels.Aggregates;
 using ModernTemplate.Options;
+using System.Text.Json;
 
 namespace ModernTemplate.Database;
 
-public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
+public sealed class ApplicationDbContext : DbContext, IUnitOfWork
 {
     private string _connectionString { get; init; }
     public DbSet<Weather> Weathers { get; init; }
-
-    private readonly IPublisher _publisher;
+    public DbSet<OutboxMessage> OutboxMessages { get; init; }
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
-        IPublisher publisher,
         IOptions<PostgresSettings> settings) : base(options)
     {
-        _publisher = publisher;
         _connectionString = settings.Value.ConnectionString;
     }
 
@@ -31,16 +28,14 @@ public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var result = await base.SaveChangesAsync(cancellationToken);
+        PersistDomainEvents();
 
-        await PublishDomainEventsAsync();
-
-        return result;
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     //https://www.milanjovanovic.tech/blog/how-to-use-domain-events-to-build-loosely-coupled-systems?utm_source=YouTube&utm_medium=social&utm_campaign=29.04.2024
     //https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation
-    private async Task PublishDomainEventsAsync(CancellationToken cancellationToken = default)
+    private void PersistDomainEvents()
     {
         var domainEvents = ChangeTracker
             .Entries<Entity>()
@@ -52,16 +47,13 @@ public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
                 return domainEvents;
             });
 
+        var outboxMessages = domainEvents
+            .Select(domainEvent => new OutboxMessage
+            {
+                Content = JsonSerializer.Serialize(domainEvent),
+                Type = domainEvent.GetType().Name,
+            });
 
-        foreach (var domainEvent in domainEvents)
-        {
-            await _publisher.Publish(domainEvent, cancellationToken);
-        }
+        OutboxMessages.AddRange(outboxMessages);
     }
-}
-
-public interface IApplicationDbContext
-{
-    public DbSet<Weather> Weathers { get;  }
-    public DatabaseFacade Database { get; }
 }

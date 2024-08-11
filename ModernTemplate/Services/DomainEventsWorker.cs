@@ -1,15 +1,15 @@
 ﻿using ModernTemplate.Database;
-using ModernTemplate.DomainModels.DomainEvents;
+using ModernTemplate.Domain.DomainEvents;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 
 namespace ModernTemplate.Services;
 
-public sealed class OutBoxService
+public sealed class DomainEventsWorker
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _dbContext;
 
-    public OutBoxService(IApplicationDbContext dbContext)
+    public DomainEventsWorker(IUnitOfWork dbContext)
     {
         _dbContext = dbContext;
     }

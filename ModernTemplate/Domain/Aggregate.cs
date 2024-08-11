@@ -1,3 +1,3 @@
-﻿namespace ModernTemplate.DomainModels;
+﻿namespace ModernTemplate.Domain;
 
 public abstract class Aggregate : Entity { }

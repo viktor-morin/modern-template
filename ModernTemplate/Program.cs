@@ -14,6 +14,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System.Reflection;
 using MediatR;
+using MediatR.NotificationPublishers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +92,11 @@ builder.Services.AddApiVersioning(options =>
       options.GroupNameFormat = "'v'VVV";
       options.SubstituteApiVersionInUrl = true;
   });
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssemblies<IApplicationLayerMarker>();
+    config.NotificationPublisher = new TaskWhenAllPublisher();
+});
 
 
 var app = builder.Build();
@@ -123,7 +129,7 @@ var versionGroup = app
     .WithApiVersionSet(apiVersionSet);
 
 app.MapEndpoints(versionGroup);
-//nest at 2024-05-18
+//nest at 2024-05-31
 
 
 app.UseHttpsRedirection();
@@ -146,8 +152,10 @@ app.UseHttpsRedirection();
 // https://github.com/FortuneN/FineCodeCoverage
 // use nameof instead of toString
 // internal -> only in same project
+// use signalr for long tasks
 
-
+// use internal on methods inside the domain layer so etc a valueobject only can be created inside the object
+// remove an object in a domain collection should use an id, not the object itself
 
 
 var summaries = new[]

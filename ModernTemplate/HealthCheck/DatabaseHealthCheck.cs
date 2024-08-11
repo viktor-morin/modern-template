@@ -6,9 +6,9 @@ namespace ModernTemplate.HealthCheck;
 
 public sealed class DatabaseHealthCheck : IHealthCheck
 {
-    private readonly IApplicationDbContext _dbContext;
+    private readonly IUnitOfWork _dbContext;
 
-    public DatabaseHealthCheck(IApplicationDbContext dbContext)
+    public DatabaseHealthCheck(IUnitOfWork dbContext)
     {
         _dbContext = dbContext;
     }
