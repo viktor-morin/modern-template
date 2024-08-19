@@ -1,4 +1,4 @@
-
+﻿
 using Asp.Versioning;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using HealthChecks.UI.Client;
@@ -14,7 +14,9 @@ using Npgsql;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -149,10 +151,18 @@ app.UseResponseCompression();
 app.UseHttpsRedirection();
 
 
+//mediatr abstraction -> https://youtube.com/shorts/yuB9Ng2-2m0?si=7fIdUTnJo3BgirAm
+
+//https://en.wikipedia.org/wiki/Single-responsibility_principle
+
 //todo
 // folder structure image!
 // check if we should use repostiory pattern, se image stored in repo
 // EF + Dapper
+// git rebase show
+// domain events -> https://medium.com/@chaojie.xiao/domain-driven-design-practice-domain-events-15b38f3c58fc
+// https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation
+// DDD load complete aggregate root
 // Write about <WarningsAsErrors>CS8602</WarningsAsErrors> and set it on all projects
 // Write about explicit declarate references such as -> "UserService userService = new UserService()" instead of "var userService = new UserService()" where it makes sense
 // PDF generation Quest PDF -> // ironPDF (quest gratis?)
@@ -170,8 +180,10 @@ app.UseHttpsRedirection();
 // use nameof instead of toString
 // internal -> only in same project
 // use signalr for long tasks
+// DDD empty interface -> https://www.youtube.com/watch?v=6Iv57MsW-W8
 
 // replace guid in .net9 with newer version, make PR qbout this
+//https://www.milanjovanovic.tech/blog/outbox-pattern-for-reliable-microservices-messaging?utm_source=YouTube&utm_medium=social&utm_campaign=24.06.2024
 
 // use internal on methods inside the domain layer so etc a valueobject only can be created inside the object
 // remove an object in a domain collection should use an id, not the object itself
@@ -191,6 +203,8 @@ app.UseHttpsRedirection();
 // Ladda hela aggregate om det verkligen inte finns en performance drawback
 // https://medium.com/@farkhondepeyali/enhancing-code-quality-in-net-core-with-sonaranalyzer-csharp-and-stylecop-analyzers-17e8f049d7a6
 // apikey https://www.youtube.com/watch?v=CV6VdBR86co
+// https://medium.com/@farkhondepeyali/enhancing-code-quality-in-net-core-with-sonaranalyzer-csharp-and-stylecop-analyzers-17e8f049d7a6
+// lear to write func / action -> https://www.youtube.com/watch?v=CVQz0E33ft4
 
 app.MapGet("/weatherforecast", async (ClaimsPrincipal claimsPrincipal) =>
 {
@@ -214,3 +228,53 @@ static string GetGrade(int grade) =>
     };
 
 app.Run();
+
+
+//DDD TEXT:
+
+//07:01
+//Suggested video
+//MEDIATR
+//JUST GOT BETTER
+//m
+//8:50
+//Close
+//Replies
+//:
+//We Can Finally Publish Notifications In Parall... Milan Jovanović
+//Play now
+//P
+//@piotrkowalski3460 • 1 yr ago (edited) @MilanJovanovicTech repositories guide others on how to work with a given entity. Some examples:
+//1.When you use an aggregate pattern you should access an entity only through the aggregate root. The repository pattern helps you to enforce
+//it
+//2. Repository can tell you whether an entity can be deleted or it abstracts a way to delete it (it's helpful with soft deletes)
+//3. There are domain problems where entities can be create-only and should never be updated
+//4. Repository encapsulates re-creating objects correctly from the database (helpful with eager loading related entities using.Include() etc)
+//Add a reply...
+//91
+//X
+//O
+
+//IOC
+
+//What does IoC stand for in C#?
+//Dependency Injection (DI) and Inversion of Control (IoC) are software design patterns that are used to decouple the components of an application and make it more maintainable, scalable, and testable.Feb 4, 2023
+
+// CQRS vs Services (domain services are okay)
+
+//15:42
+//r / csharp
+//47
+//Service Injections vs Mediated Command/Que... 16 upvotes. 45 comments
+//chamindu · 203d
+//•
+//The problem with services is that they tend to get pretty big and messy over time. This violates SRP and it becomes difficult to maintain. Even if you don't use a mediator. if helps to have smaller services/handlers that do one task.
+//...
+//← Reply
+//P
+//_BigMacStack_ OP. 202d
+//This is insightful. This project has the potential to bloat a normal service layer, and while CQRS creates alot of file bloat, it feels more idiomatic and will probably be easier to maintain in a controlled manner as more engineers have hands on this product.
+//...
+//Tenderhombre • 202d
+//I've found what often leads to service bloat is cross cutting concerns. Logging, messaging, emails, notifications. You can easily end up with with a business service that needs 20 other services.
+//Mediator pattern isn't always the best we handle these. Look at events, decorator
