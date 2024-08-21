@@ -278,3 +278,13 @@ app.Run();
 //Tenderhombre • 202d
 //I've found what often leads to service bloat is cross cutting concerns. Logging, messaging, emails, notifications. You can easily end up with with a business service that needs 20 other services.
 //Mediator pattern isn't always the best we handle these. Look at events, decorator
+
+//Lock for unique email -> application layer
+// if you have complicated and everchanging buisness rules,
+// involving validation, calculations, and derivations,
+// chances are that you'll want an object model to handle them
+// Domain Model - PoEAA
+
+//catch (DbUpdateException e)
+// when (e.InnerException is NpgsqlException { SqlState: PostgresErrorCodes.UniqueViolation })
+// {}
