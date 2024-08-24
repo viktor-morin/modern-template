@@ -155,11 +155,16 @@ app.UseHttpsRedirection();
 
 //https://en.wikipedia.org/wiki/Single-responsibility_principle
 
+//test naming convention -> SUT_WhenX_ShouldY
+//GetMovie_WhenIdIs666_SHouldThrowException()
+
+
 //todo
 // folder structure image!
 // check if we should use repostiory pattern, se image stored in repo
 // EF + Dapper
 // git rebase show
+// domain events https://www.milanjovanovic.tech/blog/how-to-use-domain-events-to-build-loosely-coupled-systems?utm_source=YouTube&utm_medium=social&utm_campaign=18.03.2024
 // domain events -> https://medium.com/@chaojie.xiao/domain-driven-design-practice-domain-events-15b38f3c58fc
 // https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation
 // DDD load complete aggregate root
@@ -173,7 +178,7 @@ app.UseHttpsRedirection();
 // https://www.milanjovanovic.tech/blog/cqrs-validation-with-mediatr-pipeline-and-fluentvalidation
 // test containers https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=YouTube&utm_medium=social&utm_campaign=04.03.2024
 // where T is : class, IEvent
-// report problemDetails -> json+problem
+// report problemDetails -> json+problem -> https://youtu.be/4NfflZilTvk?si=Q8A31zu_vauKSaFI
 // opentelemtry should be implemented -> need exporter
 // testname : SUT_WhenX_ShouldY -> GetMovie_WhenIdIsInvalid_ShouldReturnNotFound
 // https://github.com/FortuneN/FineCodeCoverage
@@ -181,6 +186,26 @@ app.UseHttpsRedirection();
 // internal -> only in same project
 // use signalr for long tasks
 // DDD empty interface -> https://www.youtube.com/watch?v=6Iv57MsW-W8
+// DDD roots -> https://www.youtube.com/watch?v=Pkvt87yL6Gs
+
+// user endpoints -> https://www.youtube.com/shorts/k5VQcWE0l6g
+
+//use sealed -> add rule
+// use internal -> add rule
+
+//outbox pattern -> https://www.youtube.com/watch?v=XALvnX7MPeo
+// ddd -> https://www.youtube.com/watch?v=fmQJTgTdUYw
+// test containers  ->  https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=YouTube&utm_medium=social&utm_campaign=04.03.2024
+
+
+// Event sourcing -> https://www.youtube.com/watch?v=n_o-xuuVtmw
+// log some easy events (past)
+// CQRS validation, fluent -> https://www.milanjovanovic.tech/blog/cqrs-validation-with-mediatr-pipeline-and-fluentvalidation?utm_source=YouTube&utm_medium=social&utm_campaign=13.06.2024
+
+// record for DTO's
+// DDD cross-cuting stuff https://www.milanjovanovic.tech/blog/balancing-cross-cutting-concerns-in-clean-architecture?utm_source=YouTube&utm_medium=social&utm_campaign=13.05.2024
+
+// easy auth in .net8 -> https://www.youtube.com/watch?v=S0RSsHKiD6Y
 
 // replace guid in .net9 with newer version, make PR qbout this
 //https://www.milanjovanovic.tech/blog/outbox-pattern-for-reliable-microservices-messaging?utm_source=YouTube&utm_medium=social&utm_campaign=24.06.2024
@@ -205,6 +230,11 @@ app.UseHttpsRedirection();
 // apikey https://www.youtube.com/watch?v=CV6VdBR86co
 // https://medium.com/@farkhondepeyali/enhancing-code-quality-in-net-core-with-sonaranalyzer-csharp-and-stylecop-analyzers-17e8f049d7a6
 // lear to write func / action -> https://www.youtube.com/watch?v=CVQz0E33ft4
+
+// strongly typed ID
+// fine code coverage -> info
+
+//OAUTH example  -> https://youtu.be/cgjifZF8ZME?si=iy6Q1ypJTG1N6xsT
 
 app.MapGet("/weatherforecast", async (ClaimsPrincipal claimsPrincipal) =>
 {
@@ -278,6 +308,9 @@ app.Run();
 //Tenderhombre • 202d
 //I've found what often leads to service bloat is cross cutting concerns. Logging, messaging, emails, notifications. You can easily end up with with a business service that needs 20 other services.
 //Mediator pattern isn't always the best we handle these. Look at events, decorator
+
+//test brokeers domain events 
+// https://www.milanjovanovic.tech/blog/testing-modular-monoliths-system-integration-testing
 
 //Lock for unique email -> application layer
 // if you have complicated and everchanging buisness rules,

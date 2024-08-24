@@ -5,13 +5,17 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        var problem = new ProblemDetails
+        var problemDetails = new ProblemDetails
         {
             //Detail = exception.Message,
-            //Status = exception.
+            //Status = exception.STatusCode,
+            //Title = exception.Title,
+            //Type = exception.Type,
         };
 
-        await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
+        httpContext.Response.StatusCode = problemDetails.Status.Value;
+
+        await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
     }
