@@ -193,6 +193,8 @@ app.UseHttpsRedirection();
 //use sealed -> add rule
 // use internal -> add rule
 
+//open telemtry logging -> https://www.milanjovanovic.tech/blog/introduction-to-distributed-tracing-with-opentelemetry-in-dotnet
+
 //outbox pattern -> https://www.youtube.com/watch?v=XALvnX7MPeo
 // ddd -> https://www.youtube.com/watch?v=fmQJTgTdUYw
 // test containers  ->  https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=YouTube&utm_medium=social&utm_campaign=04.03.2024
