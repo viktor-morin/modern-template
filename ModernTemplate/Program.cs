@@ -190,6 +190,8 @@ app.UseHttpsRedirection();
 
 // user endpoints -> https://www.youtube.com/shorts/k5VQcWE0l6g
 
+//auth med issuer and everything -> do roles/permission as well: https://www.youtube.com/watch?v=6DWJIyipxzw
+
 //write about double dispatch pattern -> not big fan -> https://youtu.be/wi_wsw5Gp6Q?t=206
 
 //use sealed -> add rule
