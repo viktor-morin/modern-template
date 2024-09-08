@@ -211,6 +211,8 @@ app.UseHttpsRedirection();
 // record for DTO's
 // DDD cross-cuting stuff https://www.milanjovanovic.tech/blog/balancing-cross-cutting-concerns-in-clean-architecture?utm_source=YouTube&utm_medium=social&utm_campaign=13.05.2024
 
+//cashing output -> https://www.milanjovanovic.tech/blog/caching-in-aspnetcore-improving-application-performance
+
 // easy auth in .net8 -> https://www.youtube.com/watch?v=S0RSsHKiD6Y
 
 // replace guid in .net9 with newer version, make PR qbout this
