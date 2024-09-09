@@ -199,6 +199,8 @@ app.UseHttpsRedirection();
 //use sealed -> add rule
 // use internal -> add rule
 
+//ef exception package -> https://www.youtube.com/watch?v=QKwZlWvfh-o
+
 //open telemtry logging -> https://www.milanjovanovic.tech/blog/introduction-to-distributed-tracing-with-opentelemetry-in-dotnet
 
 //outbox pattern -> https://www.youtube.com/watch?v=XALvnX7MPeo
