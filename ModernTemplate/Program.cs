@@ -194,6 +194,8 @@ app.UseHttpsRedirection();
 
 //write about double dispatch pattern -> not big fan -> https://youtu.be/wi_wsw5Gp6Q?t=206
 
+// trace POST data -> https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-exceptions#see-request-post-data
+
 //use sealed -> add rule
 // use internal -> add rule
 
