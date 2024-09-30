@@ -196,6 +196,15 @@ app.UseHttpsRedirection();
 
 // trace POST data -> https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-exceptions#see-request-post-data
 
+//A few DTO naming conventions l've seen:
+//•	[Something] Dto
+//•	[Something] Model
+//•	[Something] Response
+//I prefer the last one since I usually think about request/response objects when discussing
+//DTOS.
+
+
+
 //use sealed -> add rule
 // use internal -> add rule
 
