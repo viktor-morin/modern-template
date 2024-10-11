@@ -203,7 +203,7 @@ app.UseHttpsRedirection();
 //I prefer the last one since I usually think about request/response objects when discussing
 //DTOS.
 
-
+//testing -> https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet
 
 //use sealed -> add rule
 // use internal -> add rule
