@@ -158,6 +158,8 @@ app.UseHttpsRedirection();
 //test naming convention -> SUT_WhenX_ShouldY
 //GetMovie_WhenIdIs666_SHouldThrowException()
 
+// swagger ui - replacer -> .net9 https://www.youtube.com/watch?v=8yI4gD1HruY
+// implement domain service just to show the use-case
 
 //todo
 // folder structure image!
