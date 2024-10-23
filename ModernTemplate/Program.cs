@@ -161,6 +161,8 @@ app.UseHttpsRedirection();
 // swagger ui - replacer -> .net9 https://www.youtube.com/watch?v=8yI4gD1HruY
 // implement domain service just to show the use-case
 
+// Bättre med signalR som håller state i Blazor
+
 //todo
 // folder structure image!
 // check if we should use repostiory pattern, se image stored in repo
