@@ -162,6 +162,7 @@ app.UseHttpsRedirection();
 // implement domain service just to show the use-case
 
 // Bättre med signalR som håller state i Blazor
+// @blazor -> @rendermode RenderMode.InteractiveServer
 
 //todo
 // folder structure image!
