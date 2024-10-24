@@ -150,7 +150,7 @@ app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 
-
+// search in EF core -> https://youtu.be/NPduWiPzhpE?si=CEGhFbS50b8TJ6np
 //mediatr abstraction -> https://youtube.com/shorts/yuB9Ng2-2m0?si=7fIdUTnJo3BgirAm
 
 //https://en.wikipedia.org/wiki/Single-responsibility_principle
