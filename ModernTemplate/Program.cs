@@ -163,6 +163,8 @@ app.UseHttpsRedirection();
 
 // Bättre med signalR som håller state i Blazor
 // @blazor -> @rendermode RenderMode.InteractiveServer
+// jwt https://youtu.be/3XoXzEPHdTA?si=GvIk41WQM4yx30SH
+// oauth https://learn.microsoft.com/en-us/aspnet/core/security/authentication/social/?view=aspnetcore-8.0&tabs=visual-studio
 
 //todo
 // folder structure image!
