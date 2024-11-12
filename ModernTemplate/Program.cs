@@ -203,6 +203,8 @@ app.UseHttpsRedirection();
 
 // trace POST data -> https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-exceptions#see-request-post-data
 
+// good returntypes to use-> https://www.milanjovanovic.tech/blog/building-your-first-use-case-with-clean-architecture
+
 //A few DTO naming conventions l've seen:
 //•	[Something] Dto
 //•	[Something] Model
