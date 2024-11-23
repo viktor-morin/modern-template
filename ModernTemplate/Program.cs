@@ -26,6 +26,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//desktop app -> wpf for business, enterprise
+//alternertaive -> react with https://electronjs.org/
+
 
 // Own
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
