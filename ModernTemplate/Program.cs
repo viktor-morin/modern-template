@@ -28,6 +28,7 @@ builder.Services.AddSwaggerGen();
 
 //desktop app -> wpf for business, enterprise
 //alternertaive -> react with https://electronjs.org/
+//outbox pattern -> https://youtu.be/RjO2AH8JmV8?si=xn-D96T4a6YiHNXi
 
 
 // Own
