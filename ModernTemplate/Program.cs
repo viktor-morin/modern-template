@@ -30,6 +30,8 @@ builder.Services.AddSwaggerGen();
 //alternertaive -> react with https://electronjs.org/
 //outbox pattern -> https://youtu.be/RjO2AH8JmV8?si=xn-D96T4a6YiHNXi
 
+// apache service bus as docker free
+// https://kafka.apache.org/downloads
 
 // Own
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
