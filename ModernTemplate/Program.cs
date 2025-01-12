@@ -30,6 +30,8 @@ builder.Services.AddSwaggerGen();
 //alternertaive -> react with https://electronjs.org/
 //outbox pattern -> https://youtu.be/RjO2AH8JmV8?si=xn-D96T4a6YiHNXi
 
+// startup prodject design -> https://youtu.be/QRgtcbxJlo0?si=Pu37FwrhyCw5uRd1
+
 // apache service bus as docker free
 // https://kafka.apache.org/downloads
 
