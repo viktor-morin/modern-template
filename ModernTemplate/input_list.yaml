@@ -1,0 +1,29 @@
+parameters:
+- name: environment
+  displayName: 'Target environment'
+  default: 'STEST'
+  type: string
+  values:
+    - STEST
+    - STEST2
+    - ITEST
+    - ITEST2
+    - ITEST3
+    - ITEST4
+    - ITEST5
+    - ITEST6
+    - ITEST7
+    - ITEST8
+
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+  name: 'if-private'
+
+variables:
+- name: projectName
+  value: 'Hrm.System.Tests'
+- template: templates/vars.yaml
+  parameters:
+    environment: ${{ parameters.environment }}
