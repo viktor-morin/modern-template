@@ -158,6 +158,7 @@ app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 
+// test contaienrs https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=LinkedIn&utm_medium=social&utm_campaign=17.02.2025
 //imdepdent https://www.milanjovanovic.tech/blog/implementing-idempotent-rest-apis-in-aspnetcore
 
 //res https://www.milanjovanovic.tech/blog/building-resilient-cloud-applications-with-dotnet
