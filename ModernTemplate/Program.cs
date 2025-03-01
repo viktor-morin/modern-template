@@ -26,6 +26,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//fluent cqrs validation MediatR.Extensions.FluentValidation.AspNetCore
 //desktop app -> wpf for business, enterprise
 //alternertaive -> react with https://electronjs.org/
 //outbox pattern -> https://youtu.be/RjO2AH8JmV8?si=xn-D96T4a6YiHNXi
