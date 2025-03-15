@@ -21,6 +21,9 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//http-mock-lib for integrations tests
+//https://www.youtube.com/watch?v=kQXTKq2CmIM
+
 //cross cutting conserns in clean architecture
 //https://www.milanjovanovic.tech/blog/balancing-cross-cutting-concerns-in-clean-architecture
 
