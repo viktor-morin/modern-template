@@ -21,6 +21,9 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//cross cutting conserns in clean architecture
+//https://www.milanjovanovic.tech/blog/balancing-cross-cutting-concerns-in-clean-architecture
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
