@@ -166,6 +166,10 @@ app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 
+//register minmal apis -> https://www.milanjovanovic.tech/blog/automatically-register-minimal-apis-in-aspnetcore
+//decorator scrutor -> https://www.milanjovanovic.tech/blog/cqrs-pattern-the-way-it-should-have-been-from-the-start
+//replace mediatr https://www.milanjovanovic.tech/blog/cqrs-pattern-the-way-it-should-have-been-from-the-start
+
 // test contaienrs https://www.milanjovanovic.tech/blog/testcontainers-integration-testing-using-docker-in-dotnet?utm_source=LinkedIn&utm_medium=social&utm_campaign=17.02.2025
 //imdepdent https://www.milanjovanovic.tech/blog/implementing-idempotent-rest-apis-in-aspnetcore
 
