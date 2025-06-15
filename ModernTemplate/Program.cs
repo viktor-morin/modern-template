@@ -166,6 +166,8 @@ app.UseResponseCompression();
 
 app.UseHttpsRedirection();
 
+
+//code analyze -> https://www.milanjovanovic.tech/blog/improving-code-quality-in-csharp-with-static-code-analysis
 //register minmal apis -> https://www.milanjovanovic.tech/blog/automatically-register-minimal-apis-in-aspnetcore
 //decorator scrutor -> https://www.milanjovanovic.tech/blog/cqrs-pattern-the-way-it-should-have-been-from-the-start
 //replace mediatr https://www.milanjovanovic.tech/blog/cqrs-pattern-the-way-it-should-have-been-from-the-start
