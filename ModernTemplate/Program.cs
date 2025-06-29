@@ -167,7 +167,7 @@ app.UseResponseCompression();
 app.UseHttpsRedirection();
 
 // test ui Use this to test UI with playwright UI Mode playwright.dev https://youtu.be/nHUwqsRtPCU?si=fEbOHaUGrhTxD4rb
-
+// api version for minimal apis: https://www.milanjovanovic.tech/blog/api-versioning-in-aspnetcore
 
 //code analyze -> https://www.milanjovanovic.tech/blog/improving-code-quality-in-csharp-with-static-code-analysis
 //register minmal apis -> https://www.milanjovanovic.tech/blog/automatically-register-minimal-apis-in-aspnetcore
